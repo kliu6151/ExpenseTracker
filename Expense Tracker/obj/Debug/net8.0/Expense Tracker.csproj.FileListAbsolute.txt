@@ -255,3 +255,4 @@ C:\Users\kevin\source\repos\Expense Tracker\Expense Tracker\bin\Debug\net8.0\run
 C:\Users\kevin\source\repos\Expense Tracker\Expense Tracker\bin\Debug\net8.0\Syncfusion.EJ2.dll
 C:\Users\kevin\source\repos\Expense Tracker\Expense Tracker\bin\Debug\net8.0\Syncfusion.Licensing.dll
 C:\Users\kevin\source\repos\Expense Tracker\Expense Tracker\obj\Debug\net8.0\Expense Tracker.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\kevin\source\repos\Expense Tracker\Expense Tracker\obj\Debug\net8.0\Expense Tracker.sourcelink.json

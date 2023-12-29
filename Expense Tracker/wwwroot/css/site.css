@@ -62,6 +62,7 @@ body {
 
     .e-grid .e-gridcontent, .e-grid .e-table {
         background-color: #1a222b;
+        color: #fff;
     }
 
     .e-grid .e-gridheader {
@@ -70,10 +71,12 @@ body {
         border-top-right-radius: 5px;
         padding: 10px;
         background-color: #222b33;
+
     }
 
         .e-grid .e-gridheader .e-headercell {
             background-color: #222b33;
+            color:white;
         }
 
     .e-grid .e-gridpager {
@@ -95,7 +98,7 @@ body {
 }
 
 .e-pager .e-numericitem {
-    color: #adb5bd;
+    color: #fff;
     background-color: #1a222b;
     padding: 15px !important;
 }
@@ -125,6 +128,7 @@ body {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
 
 /*Logo*/
 .logo-wrapper {
