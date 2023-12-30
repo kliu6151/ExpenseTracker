@@ -27,22 +27,22 @@ namespace Expense_Tracker.Controllers
                 .ToListAsync();
 
             //Total Income
-            int TotalIncome = SelectedTransactions
+            decimal TotalIncome = SelectedTransactions
                 .Where(i => i.Category.Type == "Income")
                 .Sum(j => j.Amount);
-            ViewBag.TotalIncome = TotalIncome.ToString("C0");
+            ViewBag.TotalIncome = TotalIncome.ToString("c2");
 
             //Total Expense
-            int TotalExpense = SelectedTransactions
+            decimal TotalExpense = SelectedTransactions
                 .Where(i => i.Category.Type == "Expense")
                 .Sum(j => j.Amount);
-            ViewBag.TotalExpense = TotalExpense.ToString("C0");
+            ViewBag.TotalExpense = TotalExpense.ToString("c2");
 
             //Balance
-            int Balance = TotalIncome - TotalExpense;
+            decimal Balance = TotalIncome - TotalExpense;
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             culture.NumberFormat.CurrencyNegativePattern = 1;
-            ViewBag.Balance = String.Format(culture, "{0:C0}", Balance);
+            ViewBag.Balance = String.Format(culture, "{0:c2}", Balance);
 
             //Doughnut Chart - Expense By Category
             ViewBag.DoughnutChartData = SelectedTransactions
@@ -52,7 +52,7 @@ namespace Expense_Tracker.Controllers
                 {
                     categoryTitleWithIcon = k.First().Category.Icon + " " + k.First().Category.Title,
                     amount = k.Sum(j => j.Amount),
-                    formattedAmount = k.Sum(j => j.Amount).ToString("C0"),
+                    formattedAmount = k.Sum(j => j.Amount).ToString("c2"),
                 })
                 .OrderByDescending(l => l.amount)
                 .ToList();
@@ -112,8 +112,8 @@ namespace Expense_Tracker.Controllers
     public class SplineChartData
     {
         public string day;
-        public int income;
-        public int expense;
+        public decimal income;
+        public decimal expense;
 
     }
 }
