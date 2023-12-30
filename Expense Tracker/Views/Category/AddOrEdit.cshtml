@@ -4,6 +4,9 @@
     ViewData["PageTitle"] = Model.CategoryId == 0 ? "Create a new category" : "Edit category";
 }
 
+@{
+    var iconList = new String[] { "✈️", "💼", "🏡", "🍽️", "🛒", "🎁", "🧥", "❓" };
+}
 
 <div class="row">
     <div class="col-md-7">
@@ -23,8 +26,19 @@
                     <ejs-textbox id="title" placeholder="Title" ejs-for="Title" floatLabelType="Always"></ejs-textbox>
                     <span asp-validation-for="Title" class="text-danger fs-6"></span>
                 </div>
-                <div class="mb-3">
-                    <ejs-textbox id="icon" placeholder="Icon" ejs-for="Icon" floatLabelType="Always"></ejs-textbox>
+                <div class="mb-3 input-group">
+                    <ejs-textbox id="icon" placeholder="Icon" ejs-for="Icon" floatLabelType="Always" class="form-control"></ejs-textbox>
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-circle-question"></i>
+                            <div class="tooltip-content">
+                                @foreach (var icon in iconList)
+                                {
+                                    <div>@icon</div>
+                                }
+                            </div>
+                        </span>
+                    </div>
                 </div>
                 <ejs-button id="submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
             </form>

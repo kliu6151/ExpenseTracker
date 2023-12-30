@@ -51,7 +51,7 @@ body {
 /*Hyperlink*/
 .no-a-decoration, .no-a-decoration:hover {
     text-decoration: none;
-    color: inherit;
+    color: white;
 }
 
 /*Grid*/
@@ -353,3 +353,42 @@ img.profile-pic {
     .widget.chart {
         padding: 5px;
     }
+
+
+.input-group {
+    position: relative;
+}
+
+.input-group-append {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(100%,100%);
+}
+
+.input-group-text {
+    background-color: #222b33; /* Use your desired background color */
+    border: none;
+    color:white;
+}
+
+.form-control {
+    border-radius: 5px; /* Adjust border-radius as needed */
+}
+
+.tooltip-content {
+    display: none;
+    position: absolute;
+    transform: translateY(10%);
+    background-color: #bababa;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 15px;
+    color: black;
+}
+
+.input-group:hover .tooltip-content {
+    display: block;
+}

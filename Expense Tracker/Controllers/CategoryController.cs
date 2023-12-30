@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Expense_Tracker.Models;
+using System.Drawing.Printing;
 
 namespace Expense_Tracker.Controllers
 {
@@ -17,6 +18,8 @@ namespace Expense_Tracker.Controllers
         {
             _context = context;
         }
+
+
 
         // GET: Category
         public async Task<IActionResult> Index()
@@ -44,6 +47,8 @@ namespace Expense_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit([Bind("CategoryId,Title,Icon,Type")] Category category)
         {
+
+
             if (ModelState.IsValid)
             {
                 if (category.CategoryId == 0)
@@ -53,6 +58,7 @@ namespace Expense_Tracker.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+       
             return View(category);
         }
 
