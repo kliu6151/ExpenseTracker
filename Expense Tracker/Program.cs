@@ -1,4 +1,5 @@
 using Expense_Tracker.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,35 @@ builder.Services.AddControllersWithViews();
 //DI
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+
+builder.Services.AddRazorPages();
+
+/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+*/
+
+// Add ASP.NET Core Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
+
+    options.SignIn.RequireConfirmedAccount = true; // Include the SignIn.RequireConfirmedAccount setting
+
+    // Other Identity configurations...
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+// Configure Authentication
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "Expense_Tracker.Cookie";
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEZiW31XcXBRTmNfVUZ2Vg==");
@@ -23,11 +53,14 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
