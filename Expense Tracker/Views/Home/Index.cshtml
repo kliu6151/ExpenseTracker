@@ -1,8 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="text-center position-absolute top-50 start-50 translate-middle">
+    <h1 class="display-5 shadow-sm p-3 mb-5 bg-body rounded">Welcome to your personalized expense tracker</h1>
+    <div>
+        @await Html.PartialAsync("_LoginPartial")
+    </div>
 </div>
