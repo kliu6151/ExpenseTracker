@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Expense_Tracker.Models.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Expense_Tracker.Models
@@ -37,6 +38,11 @@ namespace Expense_Tracker.Models
                 return ((Category == null || Category.Type == "Expense") ? "- " : "+ ") + Amount.ToString("C2");
             }
         }
+
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+        [NotMapped]
+        public ApplicationUser User { get; set; }
 
     }
 }

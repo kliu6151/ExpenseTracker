@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Expense_Tracker.Models.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Expense_Tracker.Models
@@ -18,6 +19,9 @@ namespace Expense_Tracker.Models
         [Column(TypeName = "nvarchar(10)")]
         public string Type { get; set; } = "Expense";
 
+        public List<Transaction>? Transactions { get; set; }
+
+
         [NotMapped]
         public string? TitleWithIcon
         {
@@ -26,5 +30,9 @@ namespace Expense_Tracker.Models
                 return this.Icon + " " + this.Title;
             }
         }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+        [NotMapped]
+        public ApplicationUser User { get; set; }
     }
 }

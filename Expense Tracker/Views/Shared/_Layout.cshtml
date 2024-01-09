@@ -21,18 +21,20 @@
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
         @await Html.PartialAsync("_SideBar")
-        <nav class="navbar sticky-top">
-            <div class="container-fluid py-2 px-4">
-                @* <i class="fa-solid fa-magnifying-glass"></i> *@
-                <div>
-                    <i class="fa-solid fa-bell"></i>
-                    <i class="fa-solid fa-message"></i>
-                    <img class="profile-pic" src="~/profile.jpg" />
-                </div>
-            </div>
-        </nav>
-
         <div class="dock-target">
+
+            <nav class="navbar sticky-top">
+                <div class="container-fluid py-2 px-4">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <div>
+                        <i class="fa-solid fa-bell"></i>
+                        <i class="fa-solid fa-message"></i>
+                        <img class="profile-pic" src="~/profile.jpg" />
+                    </div>
+                </div>
+            </nav>
+
+
             <div class="main-content">
                 <div class="container mt-5">
                     <div class="row justify-content-center">
@@ -62,6 +64,7 @@
                                         </div>
                                     </div>
                                 }
+                                @RenderBody()
                             </main>
                         </div>
                     </div>
@@ -70,8 +73,11 @@
 
         </div>
     }
-
+    else
+    {
     @RenderBody()
+        
+    }
 
 
     
