@@ -1,6 +1,11 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+@* @page
+@model Expense_Tracker.Areas.Identity.Pages.Account.RegisterModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager *@
 @{
     List<Object> menuItems = new List<Object>();
 
@@ -12,7 +17,7 @@
     menuItems.Add(new
     {
         text = "Dashboard",
-        url = "/",
+        url = "/Dashboard",
         iconCss = "fa-solid fa-box",
     });
     menuItems.Add(new
@@ -63,7 +68,7 @@
             <img class="profile-pic" src="~/profile.jpg" />
             <div class="titles d-flex flex-column ps-3">
                 <h6 class="mb-0">Wallet App</h6>
-                <span class="text-muted">Ashton Cox</span>
+                <span class="text-muted">@User?.Identity?.Name</span>
             </div>
         </div>
 

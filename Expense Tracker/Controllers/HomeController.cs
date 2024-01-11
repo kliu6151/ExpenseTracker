@@ -15,6 +15,12 @@ namespace Expense_Tracker.Controllers
 
         public IActionResult Index()
         {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                // User is authenticated, redirect to /Dashboard
+                return RedirectToAction("Index", "Dashboard");
+            }
+
             return View();
         }
 

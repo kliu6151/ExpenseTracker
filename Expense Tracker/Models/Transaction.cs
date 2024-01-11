@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Expense_Tracker.Models.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Expense_Tracker.Models
 {
@@ -9,6 +11,7 @@ namespace Expense_Tracker.Models
         public int TransactionId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a category.")]
+
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
@@ -37,6 +40,9 @@ namespace Expense_Tracker.Models
                 return ((Category == null || Category.Type == "Expense") ? "- " : "+ ") + Amount.ToString("C2");
             }
         }
+
+        [ForeignKey(nameof(UserId))]
+        public string UserId { get; set; }
 
     }
 }

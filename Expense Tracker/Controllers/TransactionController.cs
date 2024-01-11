@@ -6,28 +6,46 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Expense_Tracker.Models;
+using Microsoft.AspNetCore.Authorization;
+using Expense_Tracker.Filters;
+using Expense_Tracker.Services;
+using Microsoft.AspNetCore.Identity;
+using Expense_Tracker.Models.Identity;
+using System.Diagnostics;
 
 namespace Expense_Tracker.Controllers
 {
+    [Authorize]
+    [RemoveUserFilter]
     public class TransactionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TransactionController(ApplicationDbContext context)
+        public TransactionController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _context = context;
+            _userManager = userManager;
+            _userService = userService;
         }
 
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Transactions.Include(t => t.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var currUser = await _userManager.GetUserAsync(User);
+            if (currUser != null && _context != null)
+            {
+                await _context.Entry(currUser).Collection(u => u.Transactions!).LoadAsync();
+            }
+            var userTransactions = currUser!.Transactions!.ToList();
+            return View(userTransactions);
         }
 
         // GET: Transaction/AddOrEdit
         public IActionResult AddOrEdit(int id = 0)
         {
+
             PopulateCategories();
             if (id == 0)
                 return View(new Transaction());
@@ -42,12 +60,30 @@ namespace Expense_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit([Bind("TransactionId,CategoryId,Amount,Note,Date")] Transaction transaction)
         {
+            var userId = _userService.GetCurrentUserId();
+
             if (ModelState.IsValid)
             {
+                var currentUser = await _userManager.GetUserAsync(User);
+                // Get the current user's ID
+                /*                var userId = _userService.GetCurrentUserId();
+                */
+                transaction.UserId = currentUser.Id;
+
+                currentUser.Transactions ??= new List<Transaction>();
+
+
+                    
                 if (transaction.TransactionId == 0)
+                {
                     _context.Add(transaction);
+                    currentUser.Transactions.Add(transaction);
+                }
                 else
+                {
                     _context.Update(transaction);
+
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -78,8 +114,11 @@ namespace Expense_Tracker.Controllers
         [NonAction]
         public void PopulateCategories()
         {
-            var CategoryCollection = _context.Categories.ToList();
-            Category DefaultCategory = new Category() { CategoryId = 0, Title = "Choose a Category" };
+            var userId = _userService.GetCurrentUserId();
+            var CategoryCollection = _context.Categories
+                .Where(c => c.UserId == userId)  // Filter by the current user's ID
+                .ToList();
+            Category DefaultCategory = new() { CategoryId = 0, Title = "Choose a Category" };
             CategoryCollection.Insert(0, DefaultCategory);
             ViewBag.Categories = CategoryCollection;
         }

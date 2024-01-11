@@ -38,7 +38,7 @@ body {
 
 /*BreadCrumb*/
 .e-breadcrumb a, .e-breadcrumb a:hover {
-    text-decoration: none !important;
+    decoration: none !important;
     color: inherit !important;
 }
 
