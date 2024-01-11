@@ -21,10 +21,10 @@ namespace Expense_Tracker.Models
 
             // Configure relationships, keys, and indexes here
             modelBuilder.Entity<Category>()
-            .HasOne(c => c.User)
-            .WithMany(u => u.Categories)
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade); // Cascade on delete
+                .HasOne<ApplicationUser>()
+                .WithMany(u => u.Categories)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Transaction>()
             .HasOne(t => t.Category)
@@ -33,7 +33,7 @@ namespace Expense_Tracker.Models
             .OnDelete(DeleteBehavior.Cascade); //Cascade on delete
 
             modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.User)
+                .HasOne<ApplicationUser>()
                 .WithMany(u => u.Transactions)
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.NoAction);

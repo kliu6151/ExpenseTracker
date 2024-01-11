@@ -1,11 +1,11 @@
-﻿using Expense_Tracker.Models.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Expense_Tracker.Models;
 
-namespace Expense_Tracker.Models
+namespace Expense_Tracker.DTOs
 {
-    public class Category
+    public class CategoryDto
     {
         [Key]
         public int CategoryId { get; set; }

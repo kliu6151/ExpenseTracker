@@ -1,8 +1,16 @@
 using Expense_Tracker.Models;
 using Expense_Tracker.Models.Identity;
+using Expense_Tracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Text.Json.Serialization;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +52,23 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
+builder.Services.AddControllers(options =>
+{
+    // Configure Newtonsoft.Json settings
+    options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+
+    options.ReturnHttpNotAcceptable = true;
+
+})
+.AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
+
+
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF1cWmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEZiW31XcXBRTmNfVUZ2Vg==");
 

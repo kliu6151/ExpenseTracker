@@ -2,10 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
+using Expense_Tracker.DTOs;
 
 namespace Expense_Tracker.Controllers
 {
+
     [Authorize]
     public class DashboardController : Controller
     {
@@ -14,6 +19,7 @@ namespace Expense_Tracker.Controllers
         public DashboardController(ApplicationDbContext context)
         {
             _context = context;
+
         }
 
         public async Task<ActionResult> Index()
@@ -100,10 +106,17 @@ namespace Expense_Tracker.Controllers
                                       };
             //Recent Transactions
             ViewBag.RecentTransactions = await _context.Transactions
-                .Include(i => i.Category)
-                .OrderByDescending(j => j.Date)
-                .Take(5)
-                .ToListAsync();
+            .Include(i => i.Category)
+            .OrderByDescending(j => j.Date)
+                    .Take(5)
+            .Select(t => new RecentTransactionDto
+            {
+                CategoryId = t.Category.CategoryId,
+                CategoryTitleWithIcon = t.CategoryTitleWithIcon,
+                Date = t.Date,
+                FormattedAmount = t.FormattedAmount
+            })
+            .ToListAsync();
 
 
             return View();

@@ -1,17 +1,15 @@
-﻿using Expense_Tracker.Models.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using Expense_Tracker.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
-namespace Expense_Tracker.Models
+namespace Expense_Tracker.DTOs
 {
-    public class Transaction
+    public class TransactionDto
     {
         [Key]
         public int TransactionId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a category.")]
-
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
