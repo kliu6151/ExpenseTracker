@@ -13,7 +13,7 @@ namespace Expense_Tracker.Models
         [Range(1, int.MaxValue, ErrorMessage = "Please select a category.")]
 
         public int CategoryId { get; set; }
-        public Category? Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         [Range(.01, double.MaxValue, ErrorMessage = "Amount should be greater than 0.")]
         public decimal Amount { get; set; }

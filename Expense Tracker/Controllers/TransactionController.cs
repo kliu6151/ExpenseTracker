@@ -12,6 +12,7 @@ using Expense_Tracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Expense_Tracker.Models.Identity;
 using System.Diagnostics;
+using Expense_Tracker.DTOs;
 
 namespace Expense_Tracker.Controllers
 {
@@ -34,12 +35,26 @@ namespace Expense_Tracker.Controllers
         public async Task<IActionResult> Index()
         {
             var currUser = await _userManager.GetUserAsync(User);
-            if (currUser != null && _context != null)
+
+            var userTransactionsDto = currUser!.Transactions!
+               .Select(t => new RecentTransactionDto
+               {
+                   CategoryId = t.CategoryId,
+                   CategoryTitleWithIcon = t.CategoryTitleWithIcon,
+                   Date = t.Date,
+                   FormattedAmount = t.FormattedAmount
+               })
+               .ToList();
+
+            return View(userTransactionsDto);
+            /* LoadAsync future use possible */
+            /*if (currUser != null && _context != null)
             {
-                await _context.Entry(currUser).Collection(u => u.Transactions!).LoadAsync();
+                await _context.Entry(currUser).Collection(u => u.Transactions!).Query().Include(t => t.Category).LoadAsync();
             }
             var userTransactions = currUser!.Transactions!.ToList();
             return View(userTransactions);
+        }*/
         }
 
         // GET: Transaction/AddOrEdit
@@ -61,23 +76,29 @@ namespace Expense_Tracker.Controllers
         public async Task<IActionResult> AddOrEdit([Bind("TransactionId,CategoryId,Amount,Note,Date")] Transaction transaction)
         {
             var userId = _userService.GetCurrentUserId();
-
+            Debug.WriteLine("BEFORE valid transaction model");
             if (ModelState.IsValid)
             {
+                Debug.WriteLine("Valid transaction model");
                 var currentUser = await _userManager.GetUserAsync(User);
                 // Get the current user's ID
                 /*                var userId = _userService.GetCurrentUserId();
                 */
                 transaction.UserId = currentUser.Id;
-
+                Debug.WriteLine("UserId: " + currentUser.Id);
+                Debug.WriteLine("CategoryId: " + transaction.CategoryId);
+                transaction.Category = await _context.Categories.FindAsync(transaction.CategoryId);
                 currentUser.Transactions ??= new List<Transaction>();
 
-
+                Debug.WriteLine(transaction.Amount);
+                Debug.WriteLine(transaction.Category);
+                Debug.WriteLine(transaction.Category.Title);
+                Debug.WriteLine(transaction.Category.Icon);
                     
                 if (transaction.TransactionId == 0)
                 {
-                    _context.Add(transaction);
                     currentUser.Transactions.Add(transaction);
+                    _context.Add(transaction);
                 }
                 else
                 {
